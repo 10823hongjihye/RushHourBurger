@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Rush Hour Burger</title>
+    <link rel="stylesheet" href="css/style.css?v=63" />
+  </head>
+  <body>
+    <div id="app">
+      <div id="stage">
+        <!-- TITLE -->
+        <section class="scene is-active title-scene is-entering" data-scene="title" data-title-mode="composite" aria-label="타이틀">
+          <div class="title-composite">
+            <img
+              class="title-cover"
+              src="assets/title-cover.png"
+              alt="Rush Hour Burger 타이틀"
+              draggable="false"
+            />
+            <div class="title-hotspots" id="title-hotspots">
+              <button type="button" class="title-menu-btn" data-action="start" aria-label="게임 시작">START</button>
+              <button type="button" class="title-menu-btn" data-action="guide" aria-label="가이드">GUIDE</button>
+              <button type="button" class="title-menu-btn" data-action="options" aria-label="옵션">OPTION</button>
+            </div>
+          </div>
+
+          <div class="title-layers" hidden>
+            <img class="layer-bg" alt="" draggable="false" />
+            <img class="layer-logo" alt="Rush Hour Burger" draggable="false" />
+            <img class="layer-character" alt="" draggable="false" />
+            <div class="title-menu" id="title-menu">
+              <button type="button" class="title-menu-btn" data-action="start" aria-label="게임 시작">START</button>
+              <button type="button" class="title-menu-btn" data-action="guide" aria-label="가이드">GUIDE</button>
+              <button type="button" class="title-menu-btn" data-action="options" aria-label="옵션">OPTION</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 1 PRACTICE -->
+        <section class="scene" data-scene="practice" aria-label="손에 익히기" hidden>
+          <div class="play-panel">
+            <p class="stub-kicker">Step 1 · 공통 시스템</p>
+            <h1>손에 익히기</h1>
+            <p class="stub-body">아이템을 집어 맞는 칸에 넣어 보세요. 시간이 0이 되면 지각입니다.</p>
+
+            <div class="item-tray">
+              <div class="item-home" data-home="key">
+                <button type="button" class="drag-item" data-drag-id="key">🔑<span>열쇠</span></button>
+              </div>
+              <div class="item-home" data-home="brush">
+                <button type="button" class="drag-item" data-drag-id="brush">🪥<span>칫솔</span></button>
+              </div>
+              <div class="item-home" data-home="bun">
+                <button type="button" class="drag-item" data-drag-id="bun">🍔<span>빵</span></button>
+              </div>
+            </div>
+
+            <div class="drop-row">
+              <div class="drop-slot" data-drop-id="pocket" data-drop-accept="key">
+                <small>주머니</small>
+              </div>
+              <div class="drop-slot" data-drop-id="sink" data-drop-accept="brush">
+                <small>세면대</small>
+              </div>
+              <div class="drop-slot" data-drop-id="plate" data-drop-accept="bun">
+                <small>접시</small>
+              </div>
+            </div>
+            <p class="complete-note">좋아요! 다음 단계로 출근 준비를 시작하세요.</p>
+          </div>
+        </section>
+
+        <!-- PHASE 1: BRUSH -->
+        <section class="scene" data-scene="brush" aria-label="양치" hidden>
+          <div class="bath">
+            <img class="bath-bg" src="assets/bathroom/bathroom_background.png" alt="" draggable="false" />
+            <img class="bath-layer" id="brush-character" src="assets/bathroom/open_eyes_character.png" alt="" draggable="false" />
+            <img class="bath-layer" id="bath-cup-tools" src="assets/bathroom/cup_with_tools.png" alt="" draggable="false" />
+            <img class="bath-layer" id="bath-cup" src="assets/bathroom/cup.png" alt="" hidden draggable="false" />
+            <img class="bath-layer" id="bath-toothpaste" src="assets/bathroom/toothpaste.png" alt="" hidden draggable="false" />
+            <img class="bath-layer" id="bath-toothbrush" src="assets/bathroom/toothbush.png" alt="" hidden draggable="false" />
+            <img class="bath-layer" id="bath-cream" src="assets/bathroom/toothpaste_cream.png" alt="" hidden draggable="false" />
+            <img class="bath-layer bath-bubble" id="bath-bubble-a" src="assets/bathroom/bubble_on_mouse.png" alt="" hidden draggable="false" />
+            <img class="bath-layer bath-bubble" id="bath-bubble-b" src="assets/bathroom/bubble_on_mouse2.png" alt="" hidden draggable="false" />
+            <div class="bath-sparkles" id="bath-sparkles" hidden>
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+
+            <button type="button" class="bath-hit" id="hit-cup-tools" aria-label="컵"></button>
+            <span class="bath-cup-arrow" id="bath-cup-arrow" hidden aria-hidden="true">▼</span>
+            <button type="button" class="bath-hit" id="hit-toothpaste" hidden aria-label="치약"></button>
+            <button type="button" class="bath-hit" id="hit-toothbrush" hidden aria-label="칫솔"></button>
+            <button type="button" class="bath-hit" id="hit-cup" hidden aria-label="컵"></button>
+            <div class="bath-hit is-target" id="hit-brush-head" hidden></div>
+            <div class="bath-hit is-target" id="hit-mouth" hidden></div>
+            <div class="rinse-gauge" id="rinse-gauge" hidden>
+              <i id="rinse-fill"></i>
+            </div>
+
+            <aside class="brush-chat" id="brush-chat" aria-live="polite">
+              <img class="brush-chat-bg" src="assets/bathroom/chat.png" alt="" draggable="false" />
+              <p class="brush-chat-text" id="brush-chat-text"></p>
+              <div class="brush-chat-mini-wrap" id="brush-chat-mini-wrap">
+                <img class="brush-chat-mini" id="brush-chat-mini" alt="" draggable="false" />
+              </div>
+              <button type="button" class="brush-chat-hit" id="brush-chat-hit" hidden aria-label="다음 대사"></button>
+              <span class="brush-chat-arrow" id="brush-chat-arrow" hidden aria-hidden="true">▼</span>
+            </aside>
+            <button type="button" class="pill-btn" id="btn-brush-next" hidden>알바로 출근 →</button>
+            <button type="button" class="pill-btn bath-skip-btn" id="btn-brush-skip" aria-label="양치 건너뛰기">SKIP</button>
+          </div>
+        </section>
+
+        <!-- PHASE 1: SEARCH — 준비물 찾기 (씬 골격만. 이미지/로직은 추후) -->
+        <section class="scene" data-scene="search" aria-label="숨은 준비물 찾기" hidden>
+          <div class="search-stage" id="search-stage">
+            <p class="search-placeholder" id="search-placeholder">준비물 찾기<br /><small>이미지·오브젝트는 나중에 추가</small></p>
+            <button type="button" class="pill-btn bath-skip-btn" id="btn-search-skip" aria-label="준비물 찾기 건너뛰기">SKIP</button>
+          </div>
+        </section>
+
+        <!-- PHASE 1: DRESS -->
+        <section class="scene" data-scene="dress" aria-label="옷 갈아입기" hidden>
+          <div class="dress-stage">
+            <p class="search-kicker">Phase 1 · 옷 갈아입기 <span id="dress-count">0 / 3</span></p>
+            <p class="bath-hint" id="dress-hint">옷장에서 옷을 집어 캐릭터에게 입혀 주세요</p>
+            <div class="dress-layout">
+              <div class="mannequin" id="dress-body">
+                <div class="doll-head"></div>
+                <div class="drop-slot body-top" data-drop-id="wear-top" data-drop-accept="top">
+                  <small>상의</small>
+                </div>
+                <div class="drop-slot body-bottom" data-drop-id="wear-bottom" data-drop-accept="bottom">
+                  <small>하의</small>
+                </div>
+                <div class="drop-slot body-shoes" data-drop-id="wear-shoes" data-drop-accept="shoes">
+                  <small>신발</small>
+                </div>
+              </div>
+              <div class="closet-panel">
+                <p class="closet-title">옷장</p>
+                <div class="item-home" data-home="top">
+                  <button type="button" class="cloth cloth-top" data-drag-id="top">👕<span>상의</span></button>
+                </div>
+                <div class="item-home" data-home="bottom">
+                  <button type="button" class="cloth cloth-bottom" data-drag-id="bottom">👗<span>하의</span></button>
+                </div>
+                <div class="item-home" data-home="shoes">
+                  <button type="button" class="cloth cloth-shoes" data-drag-id="shoes">👟<span>신발</span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TUTORIAL -->
+        <section class="scene" data-scene="tutorial" aria-label="조리 가이드" hidden>
+          <div class="station">
+            <img class="shop-art" src="assets/kitchen/burger-shop.png" alt="" draggable="false" />
+            <img class="kitchen-art" src="assets/kitchen/kitchen.png" alt="" draggable="false" />
+          </div>
+          <div class="tutorial-card">
+            <p class="stub-kicker">Phase 2 · 조리 가이드</p>
+            <h1>버거 만드는 법</h1>
+            <ol class="recipe-steps">
+              <li>
+                <img src="assets/ingredients/bottom-bread.png" alt="" />
+                <span>아래 빵</span>
+              </li>
+              <li>
+                <img src="assets/ingredients/uncooked-patty.png" alt="" />
+                <span>패티 굽기</span>
+              </li>
+              <li>
+                <span class="ing-stack">
+                  <img src="assets/ingredients/source2.png" alt="" />
+                  <img src="assets/ingredients/source1.png" alt="" />
+                </span>
+                <span>케첩 / 마요</span>
+              </li>
+              <li>
+                <span class="ing-stack">
+                  <img src="assets/ingredients/lettuce.png" alt="" />
+                  <img src="assets/ingredients/tomato.png" alt="" />
+                  <img src="assets/ingredients/cheese.png" alt="" />
+                  <img src="assets/ingredients/pickle.png" alt="" />
+                </span>
+                <span>야채</span>
+              </li>
+              <li>
+                <img src="assets/ingredients/upper-bread.png" alt="" />
+                <span>위 빵</span>
+              </li>
+            </ol>
+            <div class="sample-order">
+              <p>손님 말풍선은 아이콘으로 읽어요</p>
+              <div class="speech-bubble" aria-label="예시 주문">
+                <img src="assets/ingredients/patty.png" alt="패티" />
+                <img src="assets/ingredients/source2.png" alt="케첩" />
+                <img src="assets/ingredients/cheese.png" alt="치즈" />
+                <img src="assets/ingredients/lettuce.png" alt="양상추" />
+                <img src="assets/kitchen/orange-juice.png" alt="주스" />
+              </div>
+            </div>
+            <p class="tutorial-tip">재료를 집어 그릴이나 접시에 놓고, 완성되면 접시째 손님에게 주세요.</p>
+            <button type="button" class="pill-btn" id="btn-start-shift">알바 시작</button>
+          </div>
+        </section>
+
+        <!-- PHASE 2 -->
+        <section class="scene" data-scene="phase2" aria-label="햄버거 알바" hidden>
+          <div class="station">
+            <img class="shop-art" src="assets/kitchen/burger-shop.png" alt="" draggable="false" />
+            <div
+              class="customer-slot customer-a drop-slot"
+              id="customer-a"
+              data-layout-art="customerA"
+              data-layout-hit="customerA"
+              data-drop-id="customer-a"
+              data-drop-accept="burger-0,burger-1"
+              data-drop-stay="false"
+              aria-label="손님 A"
+            >
+              <div class="wait-bar" aria-hidden="true"><i></i></div>
+              <div class="speech-bubble mini-speech"></div>
+              <div class="customer-body" aria-hidden="true">
+                <img class="customer-art" alt="" hidden draggable="false" />
+              </div>
+            </div>
+            <div
+              class="customer-slot customer-b drop-slot"
+              id="customer-b"
+              data-layout-art="customerB"
+              data-layout-hit="customerB"
+              data-drop-id="customer-b"
+              data-drop-accept="burger-0,burger-1"
+              data-drop-stay="false"
+              aria-label="손님 B"
+            >
+              <div class="wait-bar" aria-hidden="true"><i></i></div>
+              <div class="speech-bubble mini-speech"></div>
+              <div class="customer-body" aria-hidden="true">
+                <img class="customer-art" alt="" hidden draggable="false" />
+              </div>
+            </div>
+            <img class="kitchen-art" src="assets/kitchen/kitchen.png" alt="" draggable="false" />
+            <button type="button" class="station-hit flavor-btn" data-ing="grape" data-layout-hit="grape" aria-label="포도 주스"></button>
+            <button type="button" class="station-hit flavor-btn" data-ing="orange" data-layout-hit="orange" aria-label="오렌지 주스"></button>
+            <button type="button" class="station-hit flavor-btn" data-ing="melon" data-layout-hit="melon" aria-label="멜론 주스"></button>
+            <button type="button" class="station-hit" data-ing="bun" data-layout-hit="bun" aria-label="빵"></button>
+            <button type="button" class="station-hit" data-ing="patty" data-layout-hit="patty" aria-label="패티"></button>
+            <div class="sauce-bottle layout-art" data-layout-art="mayo">
+              <img src="assets/ingredients/source1.png" alt="" draggable="false" />
+            </div>
+            <button type="button" class="station-hit" data-ing="mayo" data-layout-hit="mayo" aria-label="마요네즈"></button>
+            <div class="sauce-bottle layout-art" data-layout-art="ketchup">
+              <img src="assets/ingredients/source2.png" alt="" draggable="false" />
+            </div>
+            <button type="button" class="station-hit" data-ing="ketchup" data-layout-hit="ketchup" aria-label="케첩"></button>
+            <button type="button" class="station-hit" data-ing="lettuce" data-layout-hit="lettuce" aria-label="양상추"></button>
+            <button type="button" class="station-hit" data-ing="tomato" data-layout-hit="tomato" aria-label="토마토"></button>
+            <button type="button" class="station-hit" data-ing="cheese" data-layout-hit="cheese" aria-label="치즈"></button>
+            <button type="button" class="station-hit" data-ing="pickle" data-layout-hit="pickle" aria-label="피클"></button>
+            <div class="grill-zone" id="grill-zone" aria-label="그릴">
+              <button type="button" class="grill-pad drop-slot" data-grill="0" data-drop-id="grill-0" data-layout-hit="grillPattyLeft" data-drop-accept="patty" data-drop-stay="false" aria-label="그릴 왼쪽">
+                <img class="grill-patty" src="assets/ingredients/uncooked-patty.png" data-layout-art="grillPattyLeft" alt="" hidden />
+                <span class="grill-cook-hint" aria-hidden="true" hidden></span>
+                <span class="grill-label"></span>
+              </button>
+              <button type="button" class="grill-pad drop-slot" data-grill="1" data-drop-id="grill-1" data-layout-hit="grillPattyRight" data-drop-accept="patty" data-drop-stay="false" aria-label="그릴 오른쪽">
+                <img class="grill-patty" src="assets/ingredients/uncooked-patty.png" data-layout-art="grillPattyRight" alt="" hidden />
+                <span class="grill-cook-hint" aria-hidden="true" hidden></span>
+                <span class="grill-label"></span>
+              </button>
+            </div>
+            <div
+              class="trash-slot drop-slot"
+              id="trash-slot"
+              data-layout-hit="trash"
+              data-drop-id="trash"
+              data-drop-accept="burger-0,burger-1"
+              data-drop-stay="false"
+              aria-label="휴지통"
+            >
+              <span class="trash-label" id="trash-label">휴지통</span>
+            </div>
+            <div
+              class="build-plate drop-slot"
+              id="build-plate-0"
+              data-layout-hit="plateA"
+              data-drop-id="plate-0"
+              data-drop-accept="bun,cooked-0,cooked-1,mayo,ketchup,lettuce,tomato,cheese,pickle,grape,orange,melon,burger-0,burger-1"
+              data-drop-stay="false"
+            >
+              <div class="serve-item" id="serve-item-0" data-layout-art="plateA" data-plate="0" role="button" aria-label="위 접시">
+                <img class="dish-art" src="assets/kitchen/dish.png" alt="" draggable="false" />
+                <div class="burger-stack" id="burger-stack-0"></div>
+                <img class="drink-cup" id="drink-cup-0" alt="" hidden />
+              </div>
+            </div>
+            <div
+              class="build-plate drop-slot"
+              id="build-plate-1"
+              data-layout-hit="plateB"
+              data-drop-id="plate-1"
+              data-drop-accept="bun,cooked-0,cooked-1,mayo,ketchup,lettuce,tomato,cheese,pickle,grape,orange,melon,burger-0,burger-1"
+              data-drop-stay="false"
+            >
+              <div class="serve-item" id="serve-item-1" data-layout-art="plateB" data-plate="1" role="button" aria-label="아래 접시">
+                <img class="dish-art" src="assets/kitchen/dish.png" alt="" draggable="false" />
+                <div class="burger-stack" id="burger-stack-1"></div>
+                <img class="drink-cup" id="drink-cup-1" alt="" hidden />
+              </div>
+            </div>
+            <p class="shift-hint" id="shift-hint" hidden></p>
+
+            <!-- 햄버거 튜토리얼 오버레이 (채팅/Glow·가이드/READY·START) -->
+            <div class="cook-tutorial" id="cook-tutorial" hidden>
+              <div class="cook-tutorial-dim" id="cook-tutorial-dim" aria-hidden="true"></div>
+              <div class="cook-tutorial-rings" id="cook-tutorial-rings" aria-hidden="true"></div>
+              <div class="cook-tutorial-guides" id="cook-tutorial-guides" aria-hidden="true"></div>
+              <aside class="cook-tutorial-chat" id="cook-tutorial-chat" aria-live="polite">
+                <img class="cook-tutorial-chat-bg" id="cook-tutorial-chat-bg" src="assets/bathroom/chat.png" alt="" draggable="false" />
+                <p class="cook-tutorial-text" id="cook-tutorial-text"></p>
+                <div class="cook-tutorial-mini-wrap" id="cook-tutorial-mini-wrap">
+                  <img class="cook-tutorial-mini" id="cook-tutorial-mini" alt="" draggable="false" />
+                </div>
+                <button type="button" class="cook-tutorial-hit" id="cook-tutorial-hit" hidden aria-label="다음 대사"></button>
+                <span class="cook-tutorial-arrow" id="cook-tutorial-arrow" hidden aria-hidden="true">▼</span>
+              </aside>
+              <div class="cook-tutorial-cue" id="cook-tutorial-cue" hidden>READY</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESULT -->
+        <section class="scene" data-scene="result" id="scene-result" aria-label="결과" hidden>
+          <img class="ending-art" id="ending-art" alt="" draggable="false" hidden />
+          <div class="stub result-card">
+            <p class="stub-kicker" id="result-kicker">영업 종료</p>
+            <h1 id="result-title">오늘의 결과</h1>
+            <p id="result-copy" class="stub-body">STEP 1 시스템 테스트입니다.</p>
+            <ul class="result-stats" id="result-stats">
+              <li><span>판매 수</span><strong id="stat-sold">0</strong></li>
+              <li><span>매출</span><strong id="stat-sales">0</strong></li>
+              <li><span>놓친 손님</span><strong id="stat-missed">0</strong></li>
+              <li><span>등급</span><strong id="stat-rank">-</strong></li>
+            </ul>
+            <div class="result-actions">
+              <button type="button" class="pill-btn" id="btn-retry">다시 하기</button>
+              <button type="button" class="pill-btn pill-btn-ghost" id="btn-result-title">타이틀로</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- COMMON HUD -->
+        <header id="hud" hidden>
+          <div class="hud-chip" id="hud-timer" aria-label="남은 시간">
+            <span class="hud-icon">⏱</span>
+            <span id="hud-time">1:15</span>
+          </div>
+          <div class="hud-chip" id="hud-score" aria-label="점수">
+            <span class="hud-icon">🍔</span>
+            <span id="hud-sold">0</span>
+            <span class="hud-divider">/</span>
+            <span class="hud-icon">🪙</span>
+            <span id="hud-coins">0</span>
+            <span class="hud-divider">/</span>
+            <span class="hud-icon">💨</span>
+            <span id="hud-missed">0</span>
+          </div>
+          <button type="button" class="hud-pause" id="btn-pause" aria-label="일시정지">Ⅱ</button>
+        </header>
+
+        <aside id="inventory" class="inventory" hidden></aside>
+
+        <nav id="scene-nav" hidden>
+          <button type="button" class="pill-btn" id="btn-next">다음 단계 →</button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- GUIDE -->
+    <div class="overlay" id="overlay-guide" hidden>
+      <div class="modal" role="dialog" aria-labelledby="guide-title">
+        <p class="modal-kicker">How to play</p>
+        <h2 id="guide-title">가이드</h2>
+        <ol class="guide-list">
+          <li><strong>양치</strong> — 칫솔을 좌우로 드래그하고, 컵으로 입을 헹군다.</li>
+          <li><strong>준비물 찾기</strong> — 방 안 가구를 눌러 소지품 6~7개를 찾는다.</li>
+          <li><strong>옷 입기</strong> — 상의·하의·신발을 드래그해서 출근 준비를 끝낸다.</li>
+          <li><strong>햄버거 알바</strong> — 말풍선 레시피대로 만들어 손님에게 제출한다.</li>
+        </ol>
+        <button type="button" class="pill-btn" data-close="guide">닫기</button>
+      </div>
+    </div>
+
+    <!-- OPTIONS -->
+    <div class="overlay" id="overlay-options" hidden>
+      <div class="modal" role="dialog" aria-labelledby="options-title">
+        <p class="modal-kicker">Settings</p>
+        <h2 id="options-title">옵션</h2>
+        <label class="toggle">
+          <input type="checkbox" id="opt-bgm" checked />
+          <span>음악 (BGM)</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="opt-sfx" checked />
+          <span>효과음 (SFX)</span>
+        </label>
+        <p class="modal-kicker difficulty-kicker">난이도</p>
+        <div class="difficulty-picks">
+          <label class="toggle">
+            <input type="radio" name="opt-difficulty" value="easy" checked />
+            <span>Easy</span>
+          </label>
+          <label class="toggle">
+            <input type="radio" name="opt-difficulty" value="normal" />
+            <span>medium</span>
+          </label>
+          <label class="toggle">
+            <input type="radio" name="opt-difficulty" value="hard" />
+            <span>Hard</span>
+          </label>
+        </div>
+        <button type="button" class="pill-btn" data-close="options">닫기</button>
+      </div>
+    </div>
+
+    <!-- PAUSE -->
+    <div class="overlay" id="overlay-pause" hidden>
+      <div class="modal" role="dialog" aria-labelledby="pause-title">
+        <p class="modal-kicker">Paused</p>
+        <h2 id="pause-title">일시정지</h2>
+        <div class="modal-actions">
+          <button type="button" class="pill-btn" id="btn-resume">계속하기</button>
+          <button type="button" class="pill-btn pill-btn-ghost" id="btn-to-title">타이틀로</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/layout.js?v=24"></script>
+    <script src="js/state.js?v=20"></script>
+    <script src="js/audio.js?v=14"></script>
+    <script src="js/drag.js?v=20"></script>
+    <script src="js/title.js?v=15"></script>
+    <script src="js/brush.js?v=39"></script>
+    <script src="js/search.js?v=20"></script>
+    <script src="js/dress.js?v=13"></script>
+    <script src="js/tutorial.js?v=22"></script>
+    <script src="js/cook.js?v=41"></script>
+    <script src="js/game.js?v=28"></script>
+  </body>
+</html>
